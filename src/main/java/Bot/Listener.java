@@ -40,7 +40,6 @@ public class Listener extends ListenerAdapter {
                     for (Meeting meeting : activeMeetings) {
                         if (meeting.getPassword().equalsIgnoreCase(e.getOption("password").getAsString())) {
                             Member member = e.getMember();
-                            log.info(member.getEffectiveName() + " attended meeting #" + meeting.getPassword());
                             EmbedBuilder embed = new EmbedBuilder();
                             embed.setAuthor(member.getEffectiveName(),member.getEffectiveAvatarUrl(),member.getEffectiveAvatarUrl());
                             embed.setImage(member.getEffectiveAvatarUrl());
