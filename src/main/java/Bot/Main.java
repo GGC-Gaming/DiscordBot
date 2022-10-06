@@ -53,12 +53,14 @@ public class Main {
                             .setRequired(true).setRequiredLength(5,5)
             ).queue();
 
-            //Start Meeting
-            discordServer.upsertCommand("meeting","Starts a meeting, and will give you a password you can give out.").addSubcommands(
-                    new SubcommandData("start","Starts a meeting, and will give you a password you can give out."),
-                    new SubcommandData("end", "Ends a meeting, but you need to tell me which meeting via the password.").addOptions(
+            //Meeting | Start - End - List
+            discordServer.upsertCommand("meeting","Starts, ends, or list active meetings.").addSubcommands(
+                    new SubcommandData("start","Starts a meeting, and will give you a password you can give out.").addOptions(
+                            new OptionData(OptionType.BOOLEAN,"attending","Set this to false if you are starting the meeting, but are not attending.")
+                                    .setRequired(true)),
+                    new SubcommandData("end", "Ends a meeting, but you may need to tell me which meeting via the password").addOptions(
                             new OptionData(OptionType.STRING,"password","Scroll up in this chat, if you can't find the password...")
-                                    .setRequired(true).setRequiredLength(5,5)),
+                                    .setRequired(false).setRequiredLength(5,5)),
                     new SubcommandData("list","Gives you a list of active meetings.")
             ).queue();
 
