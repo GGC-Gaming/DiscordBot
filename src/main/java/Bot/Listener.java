@@ -2,14 +2,18 @@ package Bot;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,6 +31,31 @@ public class Listener extends ListenerAdapter {
         //#bot_testing | Text Channel//
         //logChannel = Main.getDiscordServer().getTextChannelById(1022509987907502140L);
         log.info("Listener is ready!");
+    }
+
+    @Override
+    public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent e) {
+        EmbedBuilder embed = new EmbedBuilder();
+        User joinUser = e.getUser();
+        embed.setAuthor(joinUser.getName(),joinUser.getEffectiveAvatarUrl());
+        embed.setDescription(joinUser.getAsMention() + " joined the server.");
+        embed.addField("Account creation", String.valueOf(joinUser.getTimeCreated().getYear()),true);
+        embed.setFooter("ID:" + joinUser.getId());
+        embed.setTimestamp(LocalDateTime.now());
+        embed.setColor(Color.GREEN);
+        logChannel.sendMessageEmbeds(embed.build()).queue();
+    }
+
+    @Override
+    public void onGuildMemberRemove(@NotNull GuildMemberRemoveEvent e) {
+        EmbedBuilder embed = new EmbedBuilder();
+        User leftUser = e.getUser();
+        embed.setAuthor(leftUser.getName(),leftUser.getEffectiveAvatarUrl());
+        embed.setDescription(leftUser.getAsMention() + " left the server.");
+        embed.setFooter("ID:" + leftUser.getId());
+        embed.setTimestamp(LocalDateTime.now());
+        embed.setColor(Color.RED);
+        logChannel.sendMessageEmbeds(embed.build()).queue();
     }
 
     @Override
