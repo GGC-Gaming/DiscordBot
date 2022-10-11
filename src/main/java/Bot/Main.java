@@ -3,6 +3,7 @@ package Bot;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
@@ -24,6 +25,10 @@ public class Main {
     private static JDA jda;
 
     public static List<Meeting> activeMeetings = new ArrayList<>();
+
+    public static List<Member> voters = new ArrayList<>();
+    public static int vote_left = 0;
+    public static int vote_right = 0;
 
     public static void main(String[] args) {
 
@@ -63,6 +68,13 @@ public class Main {
                                     .setRequired(false).setRequiredLength(5,5)),
                     new SubcommandData("list","Gives you a list of active meetings.")
             ).queue();
+
+            discordServer.upsertCommand("vote","Places a vote.").addSubcommands(
+                    new SubcommandData("left","Votes for the left option."),
+                    new SubcommandData("right","Votes for the right option.")
+            ).queue();
+
+            discordServer.upsertCommand("end-voting","Ends the voting period and send the results.").queue();
 
         } catch (InterruptedException e) {
             e.printStackTrace();

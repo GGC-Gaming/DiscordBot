@@ -137,6 +137,31 @@ public class Listener extends ListenerAdapter {
                     }
                 }
             }
+            case "vote" -> {
+                if (Main.voters.contains(e.getMember())) {
+                    e.reply("It appears you already voted for this one.").setEphemeral(true).queue();
+                } else {
+                    switch (e.getSubcommandName()) {
+                        case "left" -> {
+                            Main.vote_left++;
+                            e.reply("You have voted for left.").setEphemeral(true).queue();
+                        }
+                        case "right" -> {
+                            Main.vote_right++;
+                            e.reply("You have voted for right.").setEphemeral(true).queue();
+                        }
+                        default -> e.reply("An error has occurred.").setEphemeral(true).queue();
+                    }
+                }
+            }
+            case "end-voting" -> {
+                e.reply("Number of voters: " + Main.voters.size() +
+                        "\nNumber that choose Left: " + Main.vote_left +
+                        "\nNumber that choose Right: " + Main.vote_right
+                ).queue();
+                Main.vote_left = 0; Main.vote_right = 0;
+                Main.voters.clear();
+            }
         }
     }
 }
