@@ -144,10 +144,12 @@ public class Listener extends ListenerAdapter {
                     switch (e.getSubcommandName()) {
                         case "left" -> {
                             Main.vote_left++;
+                            Main.voters.add(e.getMember());
                             e.reply("You have voted for left.").setEphemeral(true).queue();
                         }
                         case "right" -> {
                             Main.vote_right++;
+                            Main.voters.add(e.getMember());
                             e.reply("You have voted for right.").setEphemeral(true).queue();
                         }
                         default -> e.reply("An error has occurred.").setEphemeral(true).queue();
